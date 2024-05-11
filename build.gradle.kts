@@ -18,6 +18,11 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-compiler-embeddable
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.24")
 
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+    implementation("ch.qos.logback:logback-classic:1.5.6")
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    implementation("org.slf4j:slf4j-api:2.0.13")
+
     testImplementation(kotlin("test"))
 }
 
