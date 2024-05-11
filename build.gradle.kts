@@ -13,7 +13,8 @@ repositories {
 }
 
 dependencies {
-
+    // https://mvnrepository.com/artifact/org.reflections/reflections
+    implementation("org.reflections:reflections:0.10.2")
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-compiler-embeddable
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.24")
 
