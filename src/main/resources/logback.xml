@@ -1,3 +1,15 @@
-<configuration>
-    <logger name="*" level="off"/>
+<configuration debug="false">
+    <logger name="org.reflections" level="off"/>
+    <logger name="ch.qos.logback" level="off"/>
+
+    <appender name="default" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d] [%level] [%thread] : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="default"/>
+    </root>
+
 </configuration>
