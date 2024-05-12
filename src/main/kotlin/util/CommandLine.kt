@@ -79,12 +79,28 @@ object CommandLine {
             return
         }
 
-        commandsMap
+        val matchCommand = commandsMap
             .filter { it.key.aliases.contains(argsMap["-mode"]) }
-            .forEach { (command, iCommand) ->
-                if (command.enable && matchArguments(argsMap, command)) {
-                    iCommand.execute(argsMap)
-                }
+
+        if (matchCommand.isEmpty()) {
+            logger.info("-----Command-----")
+
+            commandsMap.forEach { (t, u) ->
+                logger.info(StringBuilder().apply {
+                    append("${u::class.java.simpleName}: ")
+                    t.aliases.forEach {
+                        append(" $it")
+                    }
+                }.toString())
             }
+
+            return
+        }
+
+        matchCommand.forEach { (command, iCommand) ->
+            if (command.enable && matchArguments(argsMap, command)) {
+                iCommand.execute(argsMap)
+            }
+        }
     }
 }
