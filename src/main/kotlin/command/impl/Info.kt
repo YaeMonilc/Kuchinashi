@@ -5,7 +5,8 @@ import ltd.bauhinia.command.ICommand
 import ltd.bauhinia.util.logger
 
 @Command(
-    aliases = ["info", "help", "?"]
+    aliases = ["info", "help", "?"],
+    description = "show Kuchinashi information about the current version",
 )
 class Info : ICommand {
     override fun execute(args: Map<String, String>) {
