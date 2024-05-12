@@ -2,6 +2,7 @@ package ltd.bauhinia.util
 
 import ltd.bauhinia.annotation.Command
 import ltd.bauhinia.command.ICommand
+import java.util.StringJoiner
 
 object CommandLine {
     private val commandsMap = mutableMapOf<Command, ICommand>()
@@ -83,14 +84,29 @@ object CommandLine {
             .filter { it.key.aliases.contains(argsMap["-mode"]) }
 
         if (matchCommand.isEmpty()) {
-            logger.info("-----Command-----")
-
             commandsMap.forEach { (t, u) ->
+
                 logger.info(StringBuilder().apply {
-                    append("${u::class.java.simpleName}: ")
-                    t.aliases.forEach {
-                        append(" $it")
-                    }
+                    appendLine()
+                    appendLine("-----${u::class.java.simpleName}-----")
+
+                    appendLine("Aliases: ${
+                        StringJoiner(", ").apply {
+                            t.aliases.forEach { alias ->
+                                add(alias)
+                            }
+                        }
+                    }")
+                    appendLine("Args: ${t.args.toList()}")
+                    appendLine("Description: ${t.description}")
+                    appendLine("-----${
+                        StringBuilder().apply {
+                            repeat(u::class.java.simpleName.length) {
+                                append("-")
+                            }
+                        }
+                    }-----")
+                    appendLine()
                 }.toString())
             }
 
