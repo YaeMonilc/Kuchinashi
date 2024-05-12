@@ -1,5 +1,7 @@
 package ltd.bauhinia
 
-fun main() {
-    println("Kuchinashi")
+import ltd.bauhinia.util.CommandLine
+
+fun main(args: Array<String>) {
+    CommandLine.run(args)
 }
