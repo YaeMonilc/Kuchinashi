@@ -8,8 +8,8 @@ private fun processPackageName(packageName: String): String {
     return packageName.replace('.', '/')
 }
 
-fun <T> forEachSubTypes(clazz: Class<out T>, block: (clazz: Class<out T>) -> Unit) {
+fun <T> forEachSubTypes(clazz: Class<out T>, action: (clazz: Class<out T>) -> Unit) {
     reflections.getSubTypesOf(clazz).forEach {
-        block(it)
+        action(it)
     }
 }
