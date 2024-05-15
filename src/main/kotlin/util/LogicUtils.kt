@@ -1,12 +1,12 @@
 package ltd.bauhinia.util
 
-fun Boolean.ifTrue(condition: () -> Unit) {
+fun Boolean.ifTrue(action: () -> Unit) {
     if (this)
-        condition()
+        action()
 }
 
-fun Boolean.ifFalse(condition: () -> Unit) {
+fun Boolean.ifFalse(action: () -> Unit) {
     (!this).ifTrue {
-        condition()
+        action()
     }
 }
