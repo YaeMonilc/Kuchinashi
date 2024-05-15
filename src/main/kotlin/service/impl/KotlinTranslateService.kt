@@ -45,7 +45,7 @@ object KotlinTranslateService : IService {
             KotlinTokens.getByOriginName(token)?.aliasName
     }
 
-    fun translate(code: String): String {
+    fun translate(code: String, reserved: Boolean = false): String {
         val token: StringBuilder = StringBuilder()
         val translated: StringBuilder = StringBuilder()
 
@@ -53,7 +53,7 @@ object KotlinTranslateService : IService {
             val char = Character.toChars(charCode)[0]
 
             if (operators.contains(char)) {
-                translated.append(translateToken(token.toString()) ?: token)
+                translated.append(translateToken(token.toString(), reserved) ?: token)
                 token.clear()
                 translated.append(char)
                 continue
@@ -65,15 +65,15 @@ object KotlinTranslateService : IService {
         return translated.toString()
     }
 
-    fun translate(code: File): String {
-        return translate(code.readText())
+    fun translate(code: File, reserved: Boolean = false): String {
+        return translate(code.readText(), reserved)
     }
 
-    fun translate(code: File, to: File) {
-        to.writeText(translate(code))
+    fun translate(code: File, to: File, reserved: Boolean = false) {
+        to.writeText(translate(code, reserved))
     }
 
-    fun translate(dictionaryFile: File, toDictionary: File, beforeAction: (File) -> Boolean) {
+    fun translate(dictionaryFile: File, toDictionary: File, reserved: Boolean = false, beforeAction: (File) -> Boolean) {
         toDictionary.apply {
             exists().ifFalse {
                 mkdirs()
@@ -89,12 +89,14 @@ object KotlinTranslateService : IService {
                 }
             }
 
+            toFile.also { file ->
+                file.exists().ifFalse {
+                    file.createNewFile()
+                }
+            }
+
             if (beforeAction(it)) {
-                translate(it, toFile.apply {
-                    exists().ifFalse {
-                        createNewFile()
-                    }
-                })
+                translate(it, toFile, reserved)
             } else {
                 it.copyTo(toFile)
             }
