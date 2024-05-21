@@ -7,7 +7,7 @@ import ltd.bauhinia.util.ifFalse
 import java.io.File
 
 object KotlinTranslateService : IService {
-    const val SUFFIX = ".kt"
+    val SUFFIX = arrayOf(".kt", ".kts")
     private val operators: List<Char> = listOf(
         ' ',
         '+',
@@ -86,12 +86,6 @@ object KotlinTranslateService : IService {
             toFile.parentFile.apply {
                 exists().ifFalse {
                     mkdirs()
-                }
-            }
-
-            toFile.also { file ->
-                file.exists().ifFalse {
-                    file.createNewFile()
                 }
             }
 

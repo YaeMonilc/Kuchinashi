@@ -4,6 +4,7 @@ import ltd.bauhinia.annotation.Command
 import ltd.bauhinia.command.ICommand
 import ltd.bauhinia.service.impl.KotlinTranslateService
 import ltd.bauhinia.util.ifFalse
+import ltd.bauhinia.util.ifTrue
 import ltd.bauhinia.util.logger
 import java.io.File
 import kotlin.system.exitProcess
@@ -19,7 +20,11 @@ class PreBuild : ICommand {
     ) {
         FILE("file"),
         DIRECTORY("directory"),
-        TEXT("text")
+        TEXT("text");
+
+        override fun toString(): String {
+            return str
+        }
     }
 
     override fun execute(args: Map<String, String>) {
@@ -35,22 +40,24 @@ class PreBuild : ICommand {
             }
         }
 
-        if (type == Type.FILE.str || type == Type.DIRECTORY.str) {
-            val outputFile = output?.let {
-                File(it).also { file ->
-                    file.createNewFile()
+        when(type) {
+            Type.FILE.toString() ,Type.DIRECTORY.toString() -> {
+                val outputFile = File(output!!).also {
+                    it.isDirectory.ifTrue {
+                        it.mkdirs()
+                    }
                 }
-            }!!
 
-            if (type == Type.FILE.str) {
-                KotlinTranslateService.translate(inputFile, outputFile)
-            } else {
-                KotlinTranslateService.translate(inputFile, outputFile) {
-                    it.name.endsWith(KotlinTranslateService.SUFFIX)
+                when(type) {
+                    Type.FILE.toString() -> KotlinTranslateService.translate(inputFile, outputFile)
+                    Type.DIRECTORY.toString() -> KotlinTranslateService.translate(inputFile, outputFile) {
+                        it.name.endsWith(KotlinTranslateService.SUFFIX[0]) || it.name.endsWith(KotlinTranslateService.SUFFIX[1])
+                    }
                 }
             }
-        } else if (type == Type.TEXT.str) {
-            println(KotlinTranslateService.translate(inputFile))
+            Type.TEXT.toString() -> {
+                println(KotlinTranslateService.translate(inputFile))
+            }
         }
 
     }
