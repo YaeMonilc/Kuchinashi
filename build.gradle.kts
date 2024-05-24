@@ -1,9 +1,14 @@
 plugins {
     kotlin("jvm") version "2.0.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "ltd.bauhinia"
-version = "1.0-SNAPSHOT"
+version = "1.0-FREESTAR"
+
+tasks.jar {
+    manifest.attributes["Main-Class"] = "ltd.bauhinia.MainKt"
+}
 
 repositories {
     maven("https://maven.aliyun.com/repository/central")
